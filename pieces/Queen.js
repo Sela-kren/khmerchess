@@ -1,6 +1,6 @@
 class Queen extends Piece {
 	constructor(position, name) {
-		super(position, 'queen', name);
+		super(position, 'queen', name);		
 	}
 
 	// getAllowedMoves(){
@@ -16,11 +16,11 @@ class Queen extends Piece {
 	// 	];
 	// }
 
+	
 
-
-	getAllowedMoves(){
+	getAllowedMoves(){	
 		const position = this.position;
-			if(parseInt(position) == 14){
+			if(parseInt(position) == 14 ){
 				return [
 					[parseInt(position) + 20],
 					[parseInt(position) + 11],
@@ -28,7 +28,8 @@ class Queen extends Piece {
 					[parseInt(position) + 9],
 					[parseInt(position) - 9]
 
-				]	
+				]
+				
 			}else{
 				return [
 					[parseInt(position) + 11],

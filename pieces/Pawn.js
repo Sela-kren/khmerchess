@@ -17,6 +17,6 @@ class Pawn extends Piece {
 
 	changePosition(position, promote=false) {
 		this.position = parseInt(position);
-		if (promote && (position > 80 || position < 20)) game.promote(this);
+		if (promote && (position > 60 )) game.promote(this);
 	}
 }
