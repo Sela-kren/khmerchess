@@ -323,7 +323,7 @@ const pieces = [
 	new King(15, 'whiteKing'),
 	new Bishop(16, 'whiteBishop2'),
 	new Knight(17, 'whiteKnight2'),
-	new Rook(38, 'whiteRook2'),
+	new Rook(18, 'whiteRook2'),
 	new Pawn(31, 'whitePawn1'),
 	new Pawn(32, 'whitePawn2'),
 	new Pawn(33, 'whitePawn3'),
@@ -343,10 +343,10 @@ const pieces = [
 	new Pawn(68, 'blackPawn8'),
 	new Rook(81, 'blackRook1'),
 	new Knight(82, 'blackKnight1'),
-	new Bishopblack(83, 'blackBishop1'),
-	new QueenBlack(84, 'blackQueen'),
+	new Bishop(83, 'blackBishop1'),
+	new Queen(84, 'blackQueen'),
 	new King(85, 'blackKing'),
-	new Bishopblack(86, 'blackBishop2'),
+	new Bishop(86, 'blackBishop2'),
 	new Knight(87, 'blackKnight2'),
 	new Rook(88, 'blackRook2')
 ];

@@ -7,6 +7,9 @@ class Piece {
 		this.img      = document.getElementById(this.name);
 	}
 
+	setColor(color){
+		this.color = color;
+	}
 
 	hasRank(rank) {
 		return this.rank == rank;

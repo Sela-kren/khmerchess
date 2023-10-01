@@ -8,8 +8,8 @@ class Pawn extends Piece {
 			const mathSign = (this.color == 'white')? '+': '-';
 			const allowedMoves = [eval(position + mathSign +'10' )];
 
-			if ( (position >20 && position < 29) || (position >70 && position < 79) )
-				allowedMoves.push(eval(position + mathSign +'20' ));
+			// if ( (position >20 && position < 29) || (position >70 && position < 79) )
+			// 	allowedMoves.push(eval(position + mathSign +'20' ));
 
 			const attackMoves = [eval(position + mathSign + '9'), eval(position + mathSign + '11')]
 			return [ attackMoves, allowedMoves ];
@@ -17,6 +17,6 @@ class Pawn extends Piece {
 
 	changePosition(position, promote=false) {
 		this.position = parseInt(position);
-		if (promote && (position > 80 || position < 20)) game.promote(this);
+		if (promote && (position > 60 || position < 40)) game.promote(this);
 	}
 }
