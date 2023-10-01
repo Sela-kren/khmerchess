@@ -333,7 +333,7 @@ const pieces = [
 	new Pawn(37, 'whitePawn7'),
 	new Pawn(38, 'whitePawn8'),
 
-	new Pawn(61, 'blackPawn1'),
+	new BlackPawn(61, 'blackPawn1'),
 	new Pawn(62, 'blackPawn2'),
 	new Pawn(63, 'blackPawn3'),
 	new Pawn(64, 'blackPawn4'),
