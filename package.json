@@ -1,0 +1,15 @@
+{
+  "name": "khmerchess",
+  "version": "1.0.0",
+  "description": "This is a complete well automated chess game made by object oriented javascript I hope you like it.",
+  "main": "Game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "mysql2": "^3.6.1"
+  }
+}
