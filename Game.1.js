@@ -1,4 +1,3 @@
-
 class Game {
   constructor(pieces) {
     this.move = [];
@@ -45,7 +44,6 @@ class Game {
       clickedSquare.classList.add("clicked-square");
       // console.log(this.clickedPiece)
       // console.log("hhhlekfsjdfkajfl")
-
       allowedMoves.forEach((allowedMove) => {
         if (document.body.contains(document.getElementById(allowedMove))) {
           document.getElementById(allowedMove).classList.add("allowed");
@@ -213,17 +211,13 @@ class Game {
     let copy = [];
     let current = {};
     const obj = { ...this.clickedPiece };
-    const win = false;
-    const winColor = '';
     // console.log(pieces)
-
     // console.log(this.clickedPiece);
     this.move.push(obj);
     if (square.classList.contains("allowed")) {
       const clickedPiece = this.clickedPiece;
 
       // console.log(this.clickedPiece);
-
       if (clickedPiece) {
         const newPosition = square.getAttribute("id");
 
@@ -234,22 +228,15 @@ class Game {
 
         this.clearSquares();
         this.changeTurn();
-        current = { ...this.clickedPiece }
-        console.log(copy);
-        console.log("current")
-        console.log(current);
-        
-
+        current = { ...this.clickedPiece };
+        // console.log(current);
         // makeMove.push(obj);
         copy = Array.from(this.move);
-        copy.push(current)
+        copy.push(current);
         // console.log(makeMove);
         if (this.king_checked(this.turn)) {
           if (this.king_dead(this.turn)) {
             this.checkmate(clickedPiece.color);
-            win = true;
-            winColor = clickedPiece.color;
-
           } else {
             // alert('check');
           }
@@ -262,22 +249,18 @@ class Game {
     }
 
     if (event) event.preventDefault();
-    this.move.length = 0;
-    try {
 
-      const data = {
-        name : copy[0].rank,
-        color : copy[0].color,
-        position : [copy[0].position, copy[1].position],
-        other : copy[0].name
-      }
-      console.log("copy")
-      console.log(copy)
-      console.log("data")
+    try {
+      // const data = {
+      //   name : copy[[0]].rank,
+      //   color : copy[[0]].color,
+      //   position : [copy[[0]].position, copy[[1]].position],
+      // }
+      console.log("copy");
+      console.log(copy);
+      console.log("data");
       console.log(data);
-      this.allMove.push(data);
-      console.log(this.allMove);
-    }catch(error){
+    } catch (error) {
       console.log("erorr");
     }
 
@@ -290,14 +273,12 @@ class Game {
     //   .catch((error) => {
     //     console.error("Error:", error);
     //   });
-
     // // Example using fetch to POST a new piece to the server
     // const newPiece = {
     //   position: 42,
     //   name: "newPieceNamesss",
     // };
     // const endpoint = "http://localhost:3000/api/pieces";
-
     // postData(endpoint, newPiece)
     //   .then((responseData) => {
     //     // Handle the responseData if needed
@@ -416,48 +397,8 @@ class Game {
 
   checkmate(color) {
     const endScene = document.getElementById("endscene");
-    console.log("wiiinnnnnnnnnn")
     endScene.getElementsByClassName("winning-sign")[0].innerHTML =
       color + " Wins";
     endScene.classList.add("show");
-    
   }
 }
-
-const pieces = [
-  new Rook(11, "whiteRook1"),
-  new Knight(12, "whiteKnight1"),
-  new Bishop(13, "whiteBishop1"),
-  new Queen(15, "whiteQueen"),
-  new King(14, "whiteKing"),
-  new Bishop(16, "whiteBishop2"),
-  new Knight(17, "whiteKnight2"),
-  new Rook(18, "whiteRook2"),
-  new Pawn(31, "whitePawn1"),
-  new Pawn(32, "whitePawn2"),
-  new Pawn(33, "whitePawn3"),
-  new Pawn(34, "whitePawn4"),
-  new Pawn(35, "whitePawn5"),
-  new Pawn(36, "whitePawn6"),
-  new Pawn(37, "whitePawn7"),
-  new Pawn(38, "whitePawn8"),
-
-  new Pawn(61, "blackPawn1"),
-  new Pawn(62, "blackPawn2"),
-  new Pawn(63, "blackPawn3"),
-  new Pawn(64, "blackPawn4"),
-  new Pawn(65, "blackPawn5"),
-  new Pawn(66, "blackPawn6"),
-  new Pawn(67, "blackPawn7"),
-  new Pawn(68, "blackPawn8"),
-  new Rook(81, "blackRook1"),
-  new Knight(82, "blackKnight1"),
-  new Bishop(83, "blackBishop1"),
-  new Queen(84, "blackQueen"),
-  new King(85, "blackKing"),
-  new Bishop(86, "blackBishop2"),
-  new Knight(87, "blackKnight2"),
-  new Rook(88, "blackRook2"),
-];
-
-const game = new Game(pieces);
