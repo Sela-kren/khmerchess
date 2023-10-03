@@ -1,6 +1,33 @@
+function postDataToDatabase(data) {
+  fetch('http://localhost:3000/api/save', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) // Convert the fetched data to JSON string
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json(); // Parse the JSON response from the server
+  })
+  .then(result => {
+    console.log('Data posted to database:', result);
+    // Handle the response from the server if needed
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    // Handle errors for the fetch operation here
+  });
+}
+
+
+// Call the function
 
 class Game {
   constructor(pieces) {
+    // this.win = false;
     this.move = [];
     this.allMove = [];
     this.board = document.getElementById("board");
@@ -213,8 +240,8 @@ class Game {
     let copy = [];
     let current = {};
     const obj = { ...this.clickedPiece };
-    const win = false;
-    const winColor = '';
+    var win = false;
+    let winColor = "";
     // console.log(pieces)
 
     // console.log(this.clickedPiece);
@@ -234,22 +261,21 @@ class Game {
 
         this.clearSquares();
         this.changeTurn();
-        current = { ...this.clickedPiece }
+        current = { ...this.clickedPiece };
         console.log(copy);
-        console.log("current")
+        console.log("current");
         console.log(current);
-        
 
         // makeMove.push(obj);
         copy = Array.from(this.move);
-        copy.push(current)
+        copy.push(current);
         // console.log(makeMove);
         if (this.king_checked(this.turn)) {
           if (this.king_dead(this.turn)) {
             this.checkmate(clickedPiece.color);
             win = true;
+            console.log(win);
             winColor = clickedPiece.color;
-
           } else {
             // alert('check');
           }
@@ -264,47 +290,31 @@ class Game {
     if (event) event.preventDefault();
     this.move.length = 0;
     try {
-
       const data = {
-        name : copy[0].rank,
-        color : copy[0].color,
-        position : [copy[0].position, copy[1].position],
-        other : copy[0].name
-      }
-      console.log("copy")
-      console.log(copy)
-      console.log("data")
+        name: copy[0].rank,
+        color: copy[0].color,
+        position: [copy[0].position, copy[1].position],
+        other: copy[0].name,
+      };
+      console.log("copy");
+      console.log(copy);
+      console.log("data");
       console.log(data);
       this.allMove.push(data);
       console.log(this.allMove);
-    }catch(error){
+
+      if (win){
+        const save = {
+          move : JSON.stringify(data),
+          winner : winColor
+        }
+        postDataToDatabase(save);
+      }
+
+      
+    } catch (error) {
       console.log("erorr");
     }
-
-    // fetch("http://localhost:3000/api/pieces")
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log("Pieces from server:", data);
-    //     // Process pieces data here
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
-
-    // // Example using fetch to POST a new piece to the server
-    // const newPiece = {
-    //   position: 42,
-    //   name: "newPieceNamesss",
-    // };
-    // const endpoint = "http://localhost:3000/api/pieces";
-
-    // postData(endpoint, newPiece)
-    //   .then((responseData) => {
-    //     // Handle the responseData if needed
-    //   })
-    //   .catch((error) => {
-    //     // Handle the error if the POST request fails
-    //   });
   }
 
   kill(piece) {
@@ -416,11 +426,10 @@ class Game {
 
   checkmate(color) {
     const endScene = document.getElementById("endscene");
-    console.log("wiiinnnnnnnnnn")
+    console.log("wiiinnnnnnnnnn");
     endScene.getElementsByClassName("winning-sign")[0].innerHTML =
       color + " Wins";
     endScene.classList.add("show");
-    
   }
 }
 

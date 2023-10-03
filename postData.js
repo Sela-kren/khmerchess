@@ -1,20 +1,17 @@
-async function postData(endpoint, data) {
-  try {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data_1 = await response.json();
-    console.log("Response from server:", data_1);
-    return data_1;
-  } catch (error) {
-    console.error("Error:", error);
-    throw error;
-  }
-}
+const axios = require("axios");
+const data1 = { position: 'some_position', rank: 'some_rank', name: 'some_name', color: 'some_color' };
+const winColor1 = 'REd'; // Replace with your actual winner color
+
+// Make a POST request to the server
+axios.post('http://localhost:3000/api/save', {
+  move: JSON.stringify(data1),
+  winner: winColor1
+})
+  .then(response => {
+    console.log('Response from server:', response.data);
+    // Handle the response data here
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    // Handle errors here
+  });
