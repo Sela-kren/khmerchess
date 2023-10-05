@@ -1,6 +1,38 @@
+function postDataToDatabase(data) {
+  let url = 'https://khmer-chess-game.onrender.com/api/save';
+  // let url = 'http://localhost:3000/api/save';
+  
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) // Convert the fetched data to JSON string
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json(); // Parse the JSON response from the server
+  })
+  .then(result => {
+    console.log('Data posted to database:', result);
+    // Handle the response from the server if needed
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    // Handle errors for the fetch operation here
+  });
+}
+
+
+// Call the function
+
 class Game {
   constructor(pieces) {
+    // this.win = false;
     this.move = [];
+    this.allMove = [];
     this.board = document.getElementById("board");
     this.squares = this.board.querySelectorAll(".square");
     this.pieces = pieces;
@@ -15,13 +47,11 @@ class Game {
 
   addEventListeners() {
     this.pieces.forEach((piece) => {
-      
       piece.img.addEventListener("click", this.pieceMove.bind(this));
       piece.img.addEventListener("dragstart", this.pieceMove.bind(this));
       piece.img.addEventListener("drop", this.pieceMove.bind(this));
     });
     this.squares.forEach((square) => {
-      
       square.addEventListener("click", this.movePiece.bind(this));
       square.addEventListener("dragover", function (event) {
         event.preventDefault();
@@ -39,9 +69,9 @@ class Game {
       const clickedSquare = document.getElementById(position);
 
       /*if (event.type == 'click' && this.clickedPiece && this.clickedPiece.name == name) {
-				this.setClickedPiece(null);
-				return this.clearSquares();
-			}*/
+        this.setClickedPiece(null);
+        return this.clearSquares();
+      }*/
       clickedSquare.classList.add("clicked-square");
       // console.log(this.clickedPiece)
       // console.log("hhhlekfsjdfkajfl")
@@ -210,59 +240,85 @@ class Game {
 
   movePiece(event, square = "") {
     square = square || event.target;
-    let makeMove = [];
     let copy = [];
-    const obj = { ...this.clickedPiece};
+    let current = {};
+    const obj = { ...this.clickedPiece };
+    var win = false;
+    let winColor = "";
     // console.log(pieces)
 
     // console.log(this.clickedPiece);
     this.move.push(obj);
     if (square.classList.contains("allowed")) {
       const clickedPiece = this.clickedPiece;
-      
 
-      // console.log(clickedPiece);
-      
+      // console.log(this.clickedPiece);
+
       if (clickedPiece) {
         const newPosition = square.getAttribute("id");
-        // move.push(this.clickedPiece);
+
         if (clickedPiece.hasRank("king") || clickedPiece.hasRank("pawn"))
           clickedPiece.changePosition(newPosition, true);
         else clickedPiece.changePosition(newPosition);
         square.append(clickedPiece.img);
-        
+
         this.clearSquares();
         this.changeTurn();
-        // console.log(clickedPiece);
+        current = { ...this.clickedPiece };
+        console.log(copy);
+        console.log("current");
+        console.log(current);
 
         // makeMove.push(obj);
         copy = Array.from(this.move);
-        console.log(makeMove);
+        copy.push(current);
+        // console.log(makeMove);
         if (this.king_checked(this.turn)) {
+          // ** bug  **
           if (this.king_dead(this.turn)) {
             this.checkmate(clickedPiece.color);
+            win = true;
+            console.log(win);
+            winColor = clickedPiece.color;
           } else {
             // alert('check');
           }
         }
       } else {
+        current = Array.from(this.clickedPiece);
         return 0;
       }
       // this.move.push(this.clickedPiece);
     }
+
     if (event) event.preventDefault();
-    
-    const current = Array.from([this.clickedPiece]);
-    // console.log(makeMove)
-    // console.log(this.move);
-    // console.log("copy: ", copy);
-    // console.log("current : ", current);
-
-    let mergeMove = [...copy, ...current];
-    console.log(mergeMove);
     this.move.length = 0;
+    try {
+      const data = {
+        name: copy[0].rank,
+        color: copy[0].color,
+        position: [copy[0].position, copy[1].position],
+        other: copy[0].name,
+      };
+      console.log("copy");
+      console.log(copy);
+      console.log("data");
+      console.log(data);
+      this.allMove.push(data);
+      console.log(this.allMove);
 
-    
+      if (win){
+        const save = {
+          move : JSON.stringify(this.allMove),
+          winner : winColor
+        }
+        postDataToDatabase(save);
+      }
+
+      
+    } catch (error) {
+      console.log("erorr");
+    }
   }
 
   kill(piece) {
@@ -374,6 +430,7 @@ class Game {
 
   checkmate(color) {
     const endScene = document.getElementById("endscene");
+    console.log("wiiinnnnnnnnnn");
     endScene.getElementsByClassName("winning-sign")[0].innerHTML =
       color + " Wins";
     endScene.classList.add("show");
